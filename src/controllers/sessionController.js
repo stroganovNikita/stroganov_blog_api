@@ -15,6 +15,7 @@ exports.signUp = [
                 errors: errors.array()
             })
         }
+        console.log(firstname)
         const { firstname, lastname, nickname, password } = req.body;
         const test = await db.checkExistNicknameDB(nickname);
         if (test.length > 0) {

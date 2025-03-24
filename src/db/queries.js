@@ -34,10 +34,12 @@ async function getAllPostsDB() {
 
 async function createPostDB(title, text, image) {
     await prisma.posts.create({
-        date: new Date(),
-        title: title,
-        text: text,
-        image: image
+        data : {
+          date: new Date(),
+          title: title,
+          text: text,
+          image: image
+      }
     })
 };
 
@@ -58,6 +60,16 @@ async function getUserByNicknameDB(nickname) {
   return user
 };
 
+async function createCommentDB(text, authorname, postId, date) {
+    await prisma.comments.create({
+        data: {
+            text: text,
+            authorname: authorname,
+            postId: postId,
+            date: date
+        }
+    })
+};
 
 module.exports = {
     checkExistNicknameDB,
@@ -65,13 +77,23 @@ module.exports = {
     getAllPostsDB,
     createPostDB,
     getPostDB,
-    getUserByNicknameDB
+    getUserByNicknameDB,
+    createCommentDB
+};
+
+async function test() {
+    // await prisma.posts.create({
+    //     data: {
+    //       date: new Date(),
+    //       title: 'test',
+    //       text: 'I nikita',
+    //       image: 'image',
+    //       published: false
+    //   }
+    // })
+    // const user = await prisma.user.findMany()
+    // console.log(user)
 }
 
-// async function test() {
-//     const users = await prisma.user.findMany({});
-//     console.log(users)
-// }
 
-
-// test()
+test()

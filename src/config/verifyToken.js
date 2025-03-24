@@ -15,9 +15,8 @@ const verifyToken = (req, res, next) => {
                     errors: [{ msg: 'Forbidden' }]
                 })
             } else {
-            return res.json({
-                authData
-            })
+            req.auth = authData
+            next();
            }
         })
     }

@@ -11,7 +11,7 @@ exports.allPosts = async (req, res) => {
     } catch(err) {
       res.json({
         title: 'Get posts',
-        error: {msg: 'Error during get posts'}
+        errors: {msg: 'Error during get posts'}
       }) 
     }
 };
@@ -41,11 +41,24 @@ exports.getPost = async (req, res) => {
     } catch(err) {
         res.status(400).json({
             title: 'Get post',
-            error: {msg: 'Error during get post'}
+            errors: {msg: 'Error during get post'}
         })
     }
 };
 
 exports.createComment = async (req, res) => {
-  res.send('Yee')
+  try {
+    const {text, postId} = req.body;
+    const nickname = req.auth.user.nickname;
+    await db.createCommentDB(text, nickname, Number(postId), new Date());
+    return res.json({
+      title: 'Create comment',
+      data: 'Success create comment'
+    })
+  } catch(err) {
+    res.status(400).json({
+      title: 'Create comment',
+      errors: [{ msg: 'Error during create comment' }]
+    })
+  }
 };

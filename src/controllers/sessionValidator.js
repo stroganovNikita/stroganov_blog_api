@@ -4,11 +4,11 @@ exports.signUpValidator = [
     body('firstname').trim()
       .notEmpty().withMessage('First name not should be empty')
       .isAlpha().withMessage('First name should be only alpha')
-      .isLength({ min: 1, max: 20 }).withMessage('First name should be minimum 1 character and maximum 20'),
+      .isLength({ min: 5, max: 20 }).withMessage('First name should be minimum 1 character and maximum 20'),
     body('lastname').trim()
       .notEmpty().withMessage('Last name not should be empty')
       .isAlpha().withMessage('Last name should be only alpha')
-      .isLength({ min: 1, max: 20 }).withMessage('Last name should be minimum 1 character and maximum 20'),
+      .isLength({ min: 5, max: 20 }).withMessage('Last name should be minimum 1 character and maximum 20'),
     body('nickname').trim()
       .notEmpty().withMessage('Nickname not should be empty')
       .isLength({ min: 8, max: 20 }).withMessage('Nickname should be minimum 8 character and maximum 20'),

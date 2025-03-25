@@ -4,8 +4,9 @@ const cors = require('cors');
 const app = express();
 const routes = require('./src/routes/index');
 
-app.use(cors());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cors());
 
 /*Routes*/
 app.use('/posts', routes.posts);

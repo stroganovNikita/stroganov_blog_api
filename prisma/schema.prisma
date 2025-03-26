@@ -30,6 +30,6 @@ model Comments {
   authorname String
   date       DateTime
   text       String
-  post       Posts    @relation(fields: [postId], references: [id])
+  post       Posts    @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId     Int
 }

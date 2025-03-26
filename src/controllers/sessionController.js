@@ -35,7 +35,6 @@ exports.signUp = [
 exports.logIn = [
   validator.logInValidator,
   async (req, res) => {
-    console.log(req.body)
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -45,7 +44,6 @@ exports.logIn = [
     }
     const { nickname, password } = req.body;
     const user = await db.getUserByNicknameDB(nickname);
-    console.log(user);
     if (user.length <= 0) {
       return res.status(400).json({
         title: "Login user",

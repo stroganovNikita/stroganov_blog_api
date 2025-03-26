@@ -82,17 +82,8 @@ module.exports = {
 };
 
 async function test() {
-  // await prisma.posts.create({
-  //     data: {
-  //       date: new Date(),
-  //       title: 'test',
-  //       text: 'I nikita',
-  //       image: 'image',
-  //       published: false
-  //   }
-  // })
-  // const user = await prisma.user.findMany()
-  // console.log(user)
+  const user = await prisma.posts.findMany({})
+  console.log(user)
 }
 
 test();

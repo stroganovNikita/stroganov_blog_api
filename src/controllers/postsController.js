@@ -1,5 +1,7 @@
 const db = require("../db/queries");
 const supabase = require("../config/supabase");
+const { validationResult } = require("express-validator");
+const { commentValidator } = require("./postsValidator");
 
 exports.allPosts = async (req, res) => {
   try {
@@ -49,19 +51,31 @@ exports.getPost = async (req, res) => {
   }
 };
 
-exports.createComment = async (req, res) => {
-  try {
-    const { text, postId } = req.body;
-    const nickname = req.auth.user.nickname;
-    await db.createCommentDB(text, nickname, Number(postId), new Date());
-    return res.json({
-      title: "Create comment",
-      data: "Success create comment",
-    });
-  } catch (err) {
-    res.status(400).json({
-      title: "Create comment",
-      errors: [{ msg: "Error during create comment" }],
-    });
-  }
-};
+exports.createComment = [
+  commentValidator,
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+       return res.status(400).json({
+          title: "Create comment",
+          errors: errors.array(),
+        });
+      }
+      const { comment } = req.body;
+      const { postId } = req.params;
+      const nickname = req.auth.user.nickname;
+      await db.createCommentDB(comment, nickname, Number(postId), new Date());
+
+      return res.json({
+        title: "Create comment",
+        data: "Success create comment",
+      });
+    } catch (err) {
+      res.status(400).json({
+        title: "Create comment",
+        errors: [{ msg: "Error during create comment" }],
+      });
+    }
+  },
+];

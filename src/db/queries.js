@@ -81,9 +81,9 @@ module.exports = {
   createCommentDB,
 };
 
-async function test() {
-  const user = await prisma.posts.findMany({})
-  console.log(user)
-}
+// async function test() {
+//   const comment = await prisma.comments.findMany({})
+//   console.log(comment)
+// }
 
-test();
+// test();

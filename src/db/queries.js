@@ -82,8 +82,15 @@ module.exports = {
 };
 
 // async function test() {
-//   const comment = await prisma.comments.findMany({})
-//   console.log(comment)
+//   const commeent = await prisma.posts.create({
+//     data: {
+//       date: new Date(),
+//       title: 'ttttttttttttt',
+//       text: 'ttttttttttttt',
+//       image: 'tttttttttt',
+//     },
+//   })
+//   console.log(commeent)
 // }
 
 // test();

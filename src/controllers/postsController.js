@@ -1,5 +1,6 @@
 const db = require("../db/queries");
 const supabase = require("../config/supabase");
+require('dotenv').config()
 const { validationResult } = require("express-validator");
 const { commentValidator } = require("./postsValidator");
 
@@ -20,13 +21,14 @@ exports.allPosts = async (req, res) => {
 
 exports.createPost = async (req, res) => {
   try {
-    req.file.originalname = Buffer.from(
-      req.file.originalname,
-      "latin1"
-    ).toString("utf8");
+    req.file.originalname = Buffer.from(req.file.originalname,"latin1").toString("utf8");
     const image = await supabase.supabaseReturnImgUrl(req.file);
     const { title, text } = req.body;
-    await db.createPostDB(title, text, image);
+    await db.createPostDB(title, text, image.publicUrl);
+    return res.json({
+      title: 'Create post',
+      data: 'Success create post'
+    });
   } catch (err) {
     res.json({
       title: "Create post",

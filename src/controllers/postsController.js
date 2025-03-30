@@ -1,6 +1,6 @@
 const db = require("../db/queries");
 const supabase = require("../config/supabase");
-require('dotenv').config()
+require("dotenv").config();
 const { validationResult } = require("express-validator");
 const { commentValidator } = require("./postsValidator");
 
@@ -21,18 +21,45 @@ exports.allPosts = async (req, res) => {
 
 exports.createPost = async (req, res) => {
   try {
-    req.file.originalname = Buffer.from(req.file.originalname,"latin1").toString("utf8");
+    req.file.originalname = Buffer.from(
+      req.file.originalname,
+      "latin1"
+    ).toString("utf8");
     const image = await supabase.supabaseReturnImgUrl(req.file);
     const { title, text } = req.body;
     await db.createPostDB(title, text, image.publicUrl);
     return res.json({
-      title: 'Create post',
-      data: 'Success create post'
+      title: "Create post",
+      data: "Success create post",
     });
   } catch (err) {
-    res.json({
+    return res.status(404).json({
       title: "Create post",
-      errors: { msg: "Error during create post" },
+      errors: [{ msg: "Error during create post" }],
+    });
+  }
+};
+
+exports.updatePost = async (req, res) => {
+  try {
+    const { image, title, text, published } = req.body;
+    const { postId } = req.params;
+    console.log(postId, image, title, text, published);
+    await db.updatePostDB(
+      Number(postId),
+      image,
+      title,
+      text,
+      Boolean(published)
+    );
+    return res.json({
+      title: "Update post",
+      data: "Success update post",
+    });
+  } catch (err) {
+    return res.status(404).json({
+      title: "Update post",
+      errors: [{ msg: "Error during update post" }],
     });
   }
 };
@@ -46,9 +73,25 @@ exports.getPost = async (req, res) => {
       data: post,
     });
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       title: "Get post",
-      errors: { msg: "Error during get post" },
+      errors: [{ msg: "Error during get post" }],
+    });
+  }
+};
+
+exports.deletePost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    await db.deletePostDB(Number(postId));
+    return res.json({
+      title: "Delete post",
+      data: "Success delete post",
+    });
+  } catch (err) {
+    return res.status(400).json({
+      title: "Delete post",
+      errors: [{ msg: "Error during delete post" }],
     });
   }
 };
@@ -59,7 +102,7 @@ exports.createComment = [
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-       return res.status(400).json({
+        return res.status(400).json({
           title: "Create comment",
           errors: errors.array(),
         });

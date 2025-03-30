@@ -10,6 +10,8 @@ router.get("/", controller.allPosts);
 router.post("/", middlewareAdmin, upload.single("file"), controller.createPost);
 
 router.get("/:postId", controller.getPost);
+router.delete('/:postId',middlewareAdmin, controller.deletePost);
+router.put('/:postId', middlewareAdmin, controller.updatePost);
 
 router.post("/:postId/comments", verifyPerson, controller.createComment);
 

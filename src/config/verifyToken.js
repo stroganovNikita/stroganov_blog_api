@@ -44,10 +44,8 @@ const verifyPerson = (req, res, next) => {
 
 const middlewareAdmin = (req, res, next) => {
   const bearerHeader = req.headers["authorization"];
-
   if (typeof bearerHeader !== "undefined") {
     const token = bearerHeader.split(" ")[1];
-
     jwt.verify(token, process.env.SECRETKEY, (err, authData) => {
       if (err) {
         return res.status(403).json({
@@ -56,7 +54,6 @@ const middlewareAdmin = (req, res, next) => {
         });
       } else {
         if (authData.user.nickname === process.env.ADMINNICK) {
-          console.log('test')
           req.auth = authData;
           next();
         } else {

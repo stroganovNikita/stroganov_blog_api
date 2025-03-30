@@ -26,8 +26,15 @@ async function createUserDB(firstname, lastname, nickname, password) {
 async function getAllPostsDB() {
   const posts = await prisma.posts.findMany({
     include: {
-      comments: true,
+      comments: {
+        orderBy: {
+          date: 'asc'
+        }
+      }
     },
+    orderBy: {
+      date: 'asc'
+    }
   });
   return posts;
 }
@@ -49,6 +56,27 @@ async function getPostDB(id) {
       id: id,
     },
   });
+}
+
+async function deletePostDB(id) {
+  await prisma.posts.delete({
+    where: {
+      id: id
+    }
+  })
+};
+async function updatePostDB(id, image, title, text, published) {
+  await prisma.posts.update({
+    where: {
+      id: id
+    },
+    data: {
+      image: image,
+      title: title,
+      text: text,
+      published: published
+    }
+  })
 }
 
 async function getUserByNicknameDB(nickname) {
@@ -77,20 +105,15 @@ module.exports = {
   getAllPostsDB,
   createPostDB,
   getPostDB,
+  deletePostDB,
+  updatePostDB,
   getUserByNicknameDB,
   createCommentDB,
 };
 
 // async function test() {
-//   const commeent = await prisma.posts.create({
-//     data: {
-//       date: new Date(),
-//       title: 'ttttttttttttt',
-//       text: 'ttttttttttttt',
-//       image: 'tttttttttt',
-//     },
-//   })
-//   console.log(commeent)
+//    const posts = await prisma.posts.findMany({})
+//    console.log(posts)
 // }
 
 // test();

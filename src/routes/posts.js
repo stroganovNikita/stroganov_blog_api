@@ -14,7 +14,7 @@ router.delete('/:postId',middlewareAdmin, controller.deletePost);
 router.put('/:postId', middlewareAdmin, controller.updatePost);
 
 router.post("/:postId/comments", verifyPerson, controller.createComment);
-
+router.delete('/:postId/comments/:commentId', middlewareAdmin, controller.deleteComment);
 
 
 module.exports = router;

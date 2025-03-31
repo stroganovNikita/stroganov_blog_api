@@ -97,7 +97,15 @@ async function createCommentDB(text, authorname, postId, date) {
       date: date,
     },
   });
-}
+};
+
+async function deleteCommentDB(id) {
+  await prisma.comments.delete({
+    where: {
+      id: id
+    }
+  })
+};
 
 module.exports = {
   checkExistNicknameDB,
@@ -109,6 +117,7 @@ module.exports = {
   updatePostDB,
   getUserByNicknameDB,
   createCommentDB,
+  deleteCommentDB,
 };
 
 // async function test() {

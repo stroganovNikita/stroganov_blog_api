@@ -117,10 +117,26 @@ exports.createComment = [
         data: "Success create comment",
       });
     } catch (err) {
-      res.status(400).json({
+      return res.status(400).json({
         title: "Create comment",
         errors: [{ msg: "Error during create comment" }],
       });
     }
   },
 ];
+
+exports.deleteComment = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    await db.deleteCommentDB(Number(commentId));
+    return res.json({
+      title: 'Delete comment',
+      data: 'Success delete comment'
+    })
+  } catch (err) {
+    return res.status(400).json({
+      title: "Delete comment",
+      errors: [{ msg: "Error during delete post" }],
+    });
+  }
+};
